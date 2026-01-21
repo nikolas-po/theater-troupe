@@ -221,35 +221,29 @@ python src/main.py
 
 theater-troupe/
 ├── venv/                      # Виртуальное окружение
-├── src/                       # Исходный код
+├── src/               # Исходный код
 │   ├── __init__.py
-│   ├── main.py                # Главный модуль с UI
-│   ├── models/                # Модели данных
-│   │   ├── actor.py           # Модель актера
-│   │   ├── production.py      # Модель постановки
-│   │   └── ...
-│   ├── database/              # Работа с БД
+│   ├── main.py        # Главный модуль с UI
+│   ├── models/        # Модели данных
+│   ├── database/      # Работа с БД
 │   │   ├── __init__.py
-│   │   ├── connection.py      # Подключение к MySQL
-│   │   └── queries.py         # SQL запросы
-│   ├── api/                   # API endpoints
+│   │   ├── connection.py  # Подключение к MySQL
+│   │   └── queries.py     # SQL запросы
+│   ├── api/           # API endpoints
+│   ├── utils/         # Вспомогательные функции
 │   │   ├── __init__.py
-│   │   ├── actors.py          # API для актеров
-│   │   └── ...
-│   ├── utils/                 # Вспомогательные функции
-│   │   ├── __init__.py
-│   │   ├── theme.py           # Управление темами
-│   │   └── validators.py      # Валидация данных
-│   ├── export_to_pdf.py       # Экспорт в PDF
-│   └── export_to_xlsx.py      # Экспорт в Excel
-├── config/                    # Конфигурация
+│   │   ├── theme.py       # Управление темами
+│   │   └── validators.py  # Валидация данных
+│   ├── export_to_pdf.py   # Экспорт в PDF
+│   └── export_to_xlsx.py  # Экспорт в Excel
+├── config/            # Конфигурация
 │   ├── __init__.py
-│   └── database.py            # Конфигурация БД
+│   └── database.py    # Конфигурация БД
 ├── database/
-│   └── migrations/            # Миграции БД
-├── docs/                      # Документация
-│   ├── API.md                 # API документация
-│   └── EXPORT.md              # Руководство по экспорту
+│   └── migrations/    # Миграции БД
+├── docs/              # Документация
+│   ├── API.md         # API документация
+│   └── EXPORT.md      # Руководство по экспорту
 ├── reports/                   # Экспортированные отчеты
 ├── requirements.txt           # Основные зависимости
 ├── requirements-dev.txt       # Зависимости для разработки
@@ -259,6 +253,7 @@ theater-troupe/
 ├── README.md                  # Документация
 └── pyproject.toml             # Конфигурация проекта
 ```
+
 
 
 
