@@ -30,6 +30,4 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-# Папки с отчетами и кэшем Python
-reports/
-__pycache__/
+
