@@ -1,106 +1,306 @@
 # Театральная система управления
 
-Система управления театральной труппой с графическим интерфейсом.
+Система управления театральной труппой с графическим интерфейсом на Python для управления всеми аспектами театральной деятельности.
+Оглавление
+## Оглавление
 
-## Структура проекта
+- [Особенности](#особенности)
 
-```
-theater-troupe/
-├── venv/              # Виртуальное окружение
-├── src/               # Исходный код
-│   ├── __init__.py
-│   ├── main.py        # Главный модуль с UI
-│   ├── models/        # Модели данных
-│   ├── database/      # Работа с БД
-│   │   ├── __init__.py
-│   │   ├── connection.py  # Подключение к MySQL
-│   │   └── queries.py     # SQL запросы
-│   ├── api/           # API endpoints
-│   ├── utils/         # Вспомогательные функции
-│   │   ├── __init__.py
-│   │   ├── theme.py       # Управление темами
-│   │   └── validators.py  # Валидация данных
-│   ├── export_to_pdf.py   # Экспорт в PDF
-│   └── export_to_xlsx.py  # Экспорт в Excel
-├── config/            # Конфигурация
-│   ├── __init__.py
-│   └── database.py    # Конфигурация БД
-├── database/
-│   └── migrations/    # Миграции БД
-├── docs/              # Документация
-│   ├── API.md         # API документация
-│   └── EXPORT.md      # Руководство по экспорту
-├── reports/           # Экспортированные отчеты
-├── tests/             # Тесты
-├── requirements.txt   # Основные зависимости
-├── requirements-dev.txt  # Зависимости для разработки
-├── .env.example       # Шаблон переменных окружения
-├── .gitignore         # Игнорируемые файлы
-├── README.md          # Документация
-└── pyproject.toml     # Конфигурация проекта
-```
+- [Требования](#требования)
 
-## Установка
+- [Установка](#установка)
 
-1. Создайте виртуальное окружение:
-```bash
+- [Конфигурация](#)
+
+- [Использование](#)
+
+- [Структура базы данных](#)
+
+- [Структура проекта](#)
+
+## Особенности
+
+    Полный цикл управления театром: актеры, режиссеры, пьесы, постановки, спектакли, репетиции
+
+    Графический пользовательский интерфейс: интуитивно понятное управление
+
+    Поддержка MySQL: надежное хранение данных
+
+    Экспорт отчетов: генерация PDF и Excel отчетов
+
+    Поиск и фильтрация: быстрый доступ к информации
+
+    Многопользовательский режим: поддержка нескольких пользователей системы
+
+Требования
+Системные требования
+
+    ОС: Windows 10/11, Linux (Ubuntu 20.04+, Debian 10+), macOS 10.15+
+
+    Python: 3.8 или выше
+
+    MySQL: 8.0 или выше (или MariaDB 10.6+)
+
+Зависимости Python
+
+Смотрите requirements.txt для полного списка зависимостей.
+Установка
+1. Клонирование репозитория
+bash
+
+git clone https://github.com/nikolas-po/theater-troupe.git
+cd theater-troupe
+
+2. Создание виртуального окружения
+bash
+
+# Для Linux/Mac
+python3 -m venv venv
+source venv/bin/activate
+
+# Для Windows
 python -m venv venv
-```
+venv\Scripts\activate
 
-2. Активируйте виртуальное окружение:
-- Windows: `venv\Scripts\activate`
-- Linux/Mac: `source venv/bin/activate`
+3. Установка зависимостей
+bash
 
-3. Установите зависимости:
-```bash
+pip install --upgrade pip
 pip install -r requirements.txt
-```
 
-4. Создайте файл `.env` на основе `.env.example` и настройте параметры подключения к БД:
-```bash
+4. Настройка MySQL
+Установка MySQL (если не установлен):
+bash
+
+# Для Debian/Ubuntu
+sudo apt update
+sudo apt install mysql-server mysql-client -y
+sudo systemctl start mysql
+sudo systemctl enable mysql
+
+# Для Windows
+# Скачайте установщик с официального сайта MySQL
+
+Создание базы данных и пользователя:
+sql
+
+-- Подключитесь к MySQL как root
+mysql -u root -p
+
+-- Создайте базу данных (используйте имя 'nik' как в дампе)
+CREATE DATABASE nik CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- Создайте пользователя
+CREATE USER 'theater_user'@'localhost' IDENTIFIED BY 'ваш_пароль';
+
+-- Предоставьте права
+GRANT ALL PRIVILEGES ON nik.* TO 'theater_user'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+
+Импорт дампа базы данных:
+bash
+
+# Импортируйте предоставленный дамп
+mysql -u theater_user -p nik < nik(2).sql
+
+5. Настройка переменных окружения
+bash
+
+# Скопируйте шаблон
 cp .env.example .env
-```
 
-5. Запустите приложение:
-```bash
+# Отредактируйте файл .env
+nano .env  # или используйте любой текстовый редактор
+
+Содержимое .env файла:
+env
+
+# Настройки MySQL (соответствуют базе данных из дампа)
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=nik            # Имя базы данных из дампа
+DB_USER=theater_user   # Пользователь, созданный выше
+DB_PASSWORD=ваш_пароль # Пароль, указанный при создании пользователя
+
+# Настройки приложения
+DEBUG=True
+LOG_LEVEL=INFO
+PDF_EXPORT_DIR=reports/pdf
+EXCEL_EXPORT_DIR=reports/excel
+THEME=light            # light или dark
+
+6. Запуск приложения
+bash
+
 python src/main.py
-```
 
-## Использование
+Конфигурация
+Файл .env
+env
 
-Приложение предоставляет графический интерфейс для управления:
-- Актерами
-- Авторами
-- Режиссерами
-- Пьесами
-- Постановками
-- Спектаклями
-- Репетициями
-- Ролями
-- Театрами
-- Местами проведения
+# Database Configuration
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=nik
+DB_USER=theater_user
+DB_PASSWORD=your_password
+DB_CHARSET=utf8mb4
 
-## Экспорт отчетов
+# Application Settings
+DEBUG=False
+SECRET_KEY=your-secret-key-here
+LOG_LEVEL=INFO
 
-Приложение поддерживает экспорт отчетов в форматах PDF и XLSX через графический интерфейс:
+# Export Settings
+PDF_EXPORT_DIR=reports/pdf
+EXCEL_EXPORT_DIR=reports/excel
 
-1. **Статистический отчет** - Общая статистика системы с графиками (PDF/XLSX)
-2. **Детальный отчет** - Подробные таблицы со всеми данными (PDF/XLSX)
-3. **Полный Excel отчет** - Комплексный отчет с аналитикой (XLSX)
+# UI Settings
+THEME=light
+LANGUAGE=ru
 
-Отчеты сохраняются в папку `reports/` по умолчанию, но можно выбрать любое место сохранения через диалог экспорта.
+Конфигурационный файл базы данных
+python
 
-Подробнее см. [docs/EXPORT.md](docs/EXPORT.md)
+# config/database.py
+import os
+from dotenv import load_dotenv
 
-### Программный экспорт
+load_dotenv()
 
-- PDF отчеты: `python -m src.export_to_pdf`
-- Excel отчеты: `python -m src.export_to_xlsx`
+DATABASE_CONFIG = {
+    'host': os.getenv('DB_HOST', 'localhost'),
+    'port': int(os.getenv('DB_PORT', 3306)),
+    'database': os.getenv('DB_NAME', 'nik'),
+    'user': os.getenv('DB_USER', 'theater_user'),
+    'password': os.getenv('DB_PASSWORD', ''),
+    'charset': os.getenv('DB_CHARSET', 'utf8mb4')
+}
 
-## Разработка
+Использование
+Запуск приложения
+bash
 
-Для разработки установите дополнительные зависимости:
-```bash
-pip install -r requirements-dev.txt
-```
+python src/main.py
 
+Основные функции интерфейса:
+
+    Управление актерами
+
+        Добавление новых актеров
+
+        Редактирование информации об опыте
+
+        Просмотр участия в постановках
+
+    Управление постановками
+
+        Создание новых постановок
+
+        Назначение режиссеров и актеров
+
+        Планирование репетиций и спектаклей
+
+    Расписание
+
+        Просмотр расписания спектаклей
+
+        Управление репетициями
+
+        Назначение мест проведения
+
+    Отчеты
+
+        Статистика по постановкам
+
+        Финансовые отчеты
+
+        Экспорт в PDF и Excel
+
+Экспорт данных
+bash
+
+# Экспорт всех данных в Excel
+python src/export_to_xlsx.py --type=full --output=reports/full_report.xlsx
+
+# Экспорт статистики в PDF
+python src/export_to_pdf.py --type=statistical --output=reports/stats.pdf
+
+Структура базы данных
+
+База данных включает следующие таблицы:
+Основные таблицы:
+
+    actor - Актеры театра
+
+    author - Авторы пьес
+
+    director - Режиссеры
+
+    play - Пьесы
+
+    production - Постановки
+
+    performance - Спектакли
+
+    rehearsal - Репетиции
+
+    role - Роли в пьесах
+
+    theatre - Театры
+
+    location - Места проведения (залы, сцены)
+
+Таблицы связей:
+
+    actor_production - Связь актеров и постановок
+
+    actor_rehearsal - Связь актеров и репетиций
+
+    actor_role - Связь актеров и ролей
+
+    author_play - Связь авторов и пьес
+
+Структура проекта
+text
+
+theater-troupe/
+├── venv/                      # Виртуальное окружение
+├── src/                       # Исходный код
+│   ├── __init__.py
+│   ├── main.py                # Главный модуль с UI
+│   ├── models/                # Модели данных
+│   │   ├── actor.py           # Модель актера
+│   │   ├── production.py      # Модель постановки
+│   │   └── ...
+│   ├── database/              # Работа с БД
+│   │   ├── __init__.py
+│   │   ├── connection.py      # Подключение к MySQL
+│   │   └── queries.py         # SQL запросы
+│   ├── api/                   # API endpoints
+│   │   ├── __init__.py
+│   │   ├── actors.py          # API для актеров
+│   │   └── ...
+│   ├── utils/                 # Вспомогательные функции
+│   │   ├── __init__.py
+│   │   ├── theme.py           # Управление темами
+│   │   └── validators.py      # Валидация данных
+│   ├── export_to_pdf.py       # Экспорт в PDF
+│   └── export_to_xlsx.py      # Экспорт в Excel
+├── config/                    # Конфигурация
+│   ├── __init__.py
+│   └── database.py            # Конфигурация БД
+├── database/
+│   └── migrations/            # Миграции БД
+├── docs/                      # Документация
+│   ├── API.md                 # API документация
+│   └── EXPORT.md              # Руководство по экспорту
+├── reports/                   # Экспортированные отчеты
+├── requirements.txt           # Основные зависимости
+├── requirements-dev.txt       # Зависимости для разработки
+├── theatre_system.log         # Логи системы
+├── .env.example               # Шаблон переменных окружения
+├── .gitignore                 # Игнорируемые файлы
+├── README.md                  # Документация
+└── pyproject.toml             # Конфигурация проекта
