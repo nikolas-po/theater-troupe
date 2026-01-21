@@ -22,35 +22,6 @@
 5. Укажите путь сохранения или используйте путь по умолчанию
 6. Нажмите "Сохранить"
 
-### Программно:
-
-```python
-from src.utils.export_manager import export_manager
-
-# Инициализация
-await export_manager.init_database()
-
-# Экспорт статистического отчета
-success = await export_manager.export_statistical_report(
-    parent=window,
-    format_type='PDF',
-    filepath='reports/statistical_report.pdf'
-)
-
-# Экспорт детального отчета
-success = await export_manager.export_detailed_report(
-    parent=window,
-    format_type='XLSX',
-    filepath='reports/detailed_report.xlsx'
-)
-
-# Экспорт полного Excel отчета
-success = await export_manager.export_excel_report(
-    parent=window,
-    format_type='XLSX',
-    filepath='reports/full_report.xlsx'
-)
-```
 
 ## Расположение отчетов
 
@@ -59,4 +30,5 @@ success = await export_manager.export_excel_report(
 Имя файла формируется автоматически: `{тип_отчета}_{дата_время}.{расширение}`
 
 Пример: `Статистический_отчет_20241201_143022.pdf`
+
 
