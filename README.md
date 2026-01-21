@@ -113,7 +113,7 @@ DB_PASSWORD=ваш_пароль # Пароль, указанный при соз
 
 python src/main.py
 ```
-# Конфигурация
+**Конфигурация**
 **Файл .env**
 ```env
 
@@ -179,14 +179,7 @@ python src/main.py
 - Экспорт в PDF и Excel
 
 ### Экспорт данных
-```bash
-
-# Экспорт всех данных в Excel
-python src/export_to_xlsx.py --type=full --output=reports/full_report.xlsx
-
-# Экспорт статистики в PDF
-python src/export_to_pdf.py --type=statistical --output=reports/stats.pdf
-```
+С помощью интерфейса
 ## Структура базы данных
 
 База данных включает следующие таблицы:
@@ -265,6 +258,7 @@ theater-troupe/
 ├── README.md                  # Документация
 └── pyproject.toml             # Конфигурация проекта
 ```
+
 
 
 
