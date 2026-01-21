@@ -225,7 +225,7 @@ python src/main.py
 ```text
 
 theater-troupe/
-├── venv/                      # Виртуальное окружение
+├── venv/              # Виртуальное окружение
 ├── src/               # Исходный код
 │   ├── __init__.py
 │   ├── main.py        # Главный модуль с UI
@@ -258,6 +258,7 @@ theater-troupe/
 ├── README.md                  # Документация
 └── pyproject.toml             # Конфигурация проекта
 ```
+
 
 
 
