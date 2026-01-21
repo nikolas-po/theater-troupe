@@ -100,25 +100,73 @@ class ExportManager:
         
         return None
     
+    def show_save_dialog_pdf(self, parent, report_name: str) -> Optional[str]:
+        """
+        Показывает диалог сохранения файла только для PDF формата.
+        
+        Args:
+            parent: Родительское окно wxPython (может быть None)
+            report_name: Название отчета
+        
+        Returns:
+            Путь для сохранения или None если отменено
+        """
+        if not WX_AVAILABLE:
+            # Если wxPython недоступен, используем путь по умолчанию
+            default_path = self.get_default_path(report_name, 'pdf')
+            logger.info(f"Используется путь по умолчанию: {default_path}")
+            return default_path
+        
+        try:
+            import wx
+            wildcard = "PDF files (*.pdf)|*.pdf"
+            dlg = wx.FileDialog(
+                parent, 
+                message=f"Сохранить отчет {report_name} как PDF",
+                defaultDir=self.reports_dir,
+                defaultFile=f"{report_name}.pdf",
+                wildcard=wildcard,
+                style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT
+            )
+            
+            if dlg.ShowModal() == wx.ID_OK:
+                path = dlg.GetPath()
+                # Убедимся, что расширение .pdf
+                if not path.lower().endswith('.pdf'):
+                    path += '.pdf'
+                return path
+            return None
+        except Exception as e:
+            logger.error(f"Ошибка показа диалога сохранения PDF: {e}", exc_info=True)
+            default_path = self.get_default_path(report_name, 'pdf')
+            return default_path
+    
     async def export_statistical_report(self, parent=None, 
                                        format_type: str = None, 
                                        filepath: str = None) -> bool:
         """
-        Экспорт статистического отчета.
+        Экспорт статистического отчета. Только PDF формат.
         
         Args:
             parent: Родительское окно для диалога
-            format_type: Формат отчета ('PDF' или 'XLSX'), если None - показывается диалог
+            format_type: Формат отчета (должен быть 'PDF'), если None - используется PDF
             filepath: Путь сохранения, если None - показывается диалог
         
         Returns:
             True если экспорт успешен, False в противном случае
         """
-        if not format_type or not filepath:
-            result = self.show_export_dialog(parent, "Статистический_отчет")
-            if not result:
+        # Статистический отчет поддерживает только PDF
+        if format_type and format_type.upper() != 'PDF':
+            logger.error("Статистический отчет поддерживает только формат PDF")
+            return False
+        
+        # Устанавливаем формат PDF по умолчанию
+        format_type = 'PDF'
+        
+        if not filepath:
+            filepath = self.show_save_dialog_pdf(parent, "Статистический_отчет")
+            if not filepath:
                 return False
-            format_type, filepath = result
         
         # Убеждаемся, что db_manager установлен перед экспортом
         if not self.db_manager:
@@ -126,19 +174,11 @@ class ExportManager:
             return False
         
         try:
-            if format_type.upper() == 'PDF':
-                from src.export_to_pdf import StatisticalReport
-                logger.info(f"Создание статистического отчета с db_manager: {type(self.db_manager)}")
-                report = StatisticalReport(self.db_manager)
-                logger.info(f"Статистический отчет создан, db_manager установлен: {report.db_manager is not None}")
-                return await report.generate_report(filepath)
-            elif format_type.upper() == 'XLSX':
-                # Для Excel статистический отчет можно добавить позже
-                logger.warning("Статистический отчет в Excel пока не реализован")
-                return False
-            else:
-                logger.error(f"Неподдерживаемый формат: {format_type}")
-                return False
+            from src.export_to_pdf import StatisticalReport
+            logger.info(f"Создание статистического отчета с db_manager: {type(self.db_manager)}")
+            report = StatisticalReport(self.db_manager)
+            logger.info(f"Статистический отчет создан, db_manager установлен: {report.db_manager is not None}")
+            return await report.generate_report(filepath)
         except Exception as e:
             logger.error(f"Ошибка экспорта статистического отчета: {e}")
             return False
@@ -147,21 +187,28 @@ class ExportManager:
                                     format_type: str = None,
                                     filepath: str = None) -> bool:
         """
-        Экспорт детального отчета.
+        Экспорт детального отчета. Только PDF формат.
         
         Args:
             parent: Родительское окно для диалога
-            format_type: Формат отчета ('PDF' или 'XLSX'), если None - показывается диалог
+            format_type: Формат отчета (должен быть 'PDF'), если None - используется PDF
             filepath: Путь сохранения, если None - показывается диалог
         
         Returns:
             True если экспорт успешен, False в противном случае
         """
-        if not format_type or not filepath:
-            result = self.show_export_dialog(parent, "Детальный_отчет")
-            if not result:
+        # Детальный отчет поддерживает только PDF
+        if format_type and format_type.upper() != 'PDF':
+            logger.error("Детальный отчет поддерживает только формат PDF")
+            return False
+        
+        # Устанавливаем формат PDF по умолчанию
+        format_type = 'PDF'
+        
+        if not filepath:
+            filepath = self.show_save_dialog_pdf(parent, "Детальный_отчет")
+            if not filepath:
                 return False
-            format_type, filepath = result
         
         # Убеждаемся, что db_manager установлен перед экспортом
         if not self.db_manager:
@@ -169,18 +216,11 @@ class ExportManager:
             return False
         
         try:
-            if format_type.upper() == 'PDF':
-                from src.export_to_pdf import DetailedReport
-                logger.info(f"Создание детального отчета с db_manager: {type(self.db_manager)}")
-                report = DetailedReport(self.db_manager)
-                logger.info(f"Детальный отчет создан, db_manager установлен: {report.db_manager is not None}")
-                return await report.generate_report(filepath)
-            elif format_type.upper() == 'XLSX':
-                # Для детального Excel отчета используем полный отчет
-                return await self._export_xlsx_full(filepath)
-            else:
-                logger.error(f"Неподдерживаемый формат: {format_type}")
-                return False
+            from src.export_to_pdf import DetailedReport
+            logger.info(f"Создание детального отчета с db_manager: {type(self.db_manager)}")
+            report = DetailedReport(self.db_manager)
+            logger.info(f"Детальный отчет создан, db_manager установлен: {report.db_manager is not None}")
+            return await report.generate_report(filepath)
         except Exception as e:
             logger.error(f"Ошибка экспорта детального отчета: {e}")
             return False
@@ -193,7 +233,7 @@ class ExportManager:
         
         Args:
             parent: Родительское окно для диалога
-            format_type: Формат отчета (должен быть 'XLSX')
+            format_type: Формат отчета (должен быть 'XLSX'), если None - показывается диалог
             filepath: Путь сохранения, если None - показывается диалог
         
         Returns:
@@ -215,17 +255,10 @@ class ExportManager:
             logger.error(f"Ошибка экспорта Excel отчета: {e}")
             return False
     
-    async def _export_xlsx_detailed(self, filepath: str) -> bool:
-        """Внутренний метод для экспорта детального Excel отчета"""
-        # Здесь можно реализовать детальный Excel отчет
-        # Пока используем полный отчет
-        return await self._export_xlsx_full(filepath)
-    
     async def _export_xlsx_full(self, filepath: str) -> bool:
         """Внутренний метод для экспорта полного Excel отчета"""
         try:
             from src.export_to_xlsx import create_report_with_path
-            # Модифицируем функцию экспорта для работы с путем
             loop = asyncio.get_event_loop()
             result = await loop.run_in_executor(
                 None,
@@ -239,4 +272,3 @@ class ExportManager:
 
 # Глобальный экземпляр менеджера экспорта
 export_manager = ExportManager()
-

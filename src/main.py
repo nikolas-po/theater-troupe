@@ -6290,7 +6290,7 @@ class DashboardPanel(wx.Panel):
                 }
                 
                 report_name = report_names.get(report_type, 'Отчет')
-                formats = ['PDF', 'XLSX'] if report_type != 'excel' else ['XLSX']
+                formats = ['PDF'] if report_type != 'excel' else ['XLSX']
                 
                 result = export_manager.show_export_dialog(
                     self, report_name, formats

@@ -2,7 +2,7 @@
 Утилиты для работы с отчетами.
 """
 import os
-from typing import List, Optional
+from typing import Optional
 from datetime import datetime
 
 
@@ -12,11 +12,6 @@ def get_reports_directory() -> str:
     if not os.path.exists(reports_dir):
         os.makedirs(reports_dir, exist_ok=True)
     return reports_dir
-
-
-def get_available_report_formats() -> List[str]:
-    """Возвращает список доступных форматов отчетов"""
-    return ['PDF', 'XLSX']
 
 
 def generate_report_filename(report_name: str, format_ext: str, 
@@ -55,4 +50,3 @@ def ensure_directory_exists(filepath: str) -> str:
     if directory and not os.path.exists(directory):
         os.makedirs(directory, exist_ok=True)
     return filepath
-
