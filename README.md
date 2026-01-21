@@ -5,7 +5,7 @@
 ## Структура проекта
 
 ```
-tt/
+theater-troupe/
 ├── venv/              # Виртуальное окружение
 ├── src/               # Исходный код
 │   ├── __init__.py
@@ -103,3 +103,4 @@ python src/main.py
 ```bash
 pip install -r requirements-dev.txt
 ```
+
