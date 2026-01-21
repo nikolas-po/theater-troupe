@@ -255,9 +255,9 @@ theater-troupe/
 ├── theatre_system.log         # Логи системы
 ├── .env.example               # Шаблон переменных окружения
 ├── .gitignore                 # Игнорируемые файлы
-├── README.md                  # Документация
-└── pyproject.toml             # Конфигурация проекта
+└── README.md                  # Документация
 ```
+
 
 
 
