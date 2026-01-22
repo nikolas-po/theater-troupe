@@ -256,16 +256,20 @@ theater-troupe/
 ```
 
 
-
-
+ **Для VirtualBox усли не устанавливаеться wxPython (не хватает памяти)**
+1. Установкка wxPython
 ```bash
 sudo apt install python3-wxgtk4.0
+```
+2. Создаем ссылку на папку wx внутри вашего venv
+```bash
 
-# Создаем ссылку на папку wx внутри вашего venv
+
 ln -s /usr/lib/python3/dist-packages/wx venv/lib/python3.13/site-packages/wx
 
-grep -v "wxPython" requirements.txt | pip install -r /dev/stdin #в окружении
+grep -v "wxPython" requirements.txt | pip install -r /dev/stdin 
 ```
+
 
 
 
