@@ -96,9 +96,9 @@ cp .env.example .env
 
 # Отредактируйте файл .env
 nano .env  # или используйте любой текстовый редактор
-
-Содержимое .env файла:
-env
+```
+**Содержимое .env файла:**
+```env
 
 # Настройки MySQL
 DB_HOST=localhost
@@ -254,6 +254,7 @@ theater-troupe/
 ├── .gitignore                 # Игнорируемые файлы
 └── README.md                  # Документация
 ```
+
 
 
 
