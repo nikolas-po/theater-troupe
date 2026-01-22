@@ -46,7 +46,8 @@ cd theater-troupe
 # Для Linux/Mac
 python3 -m venv venv
 source venv/bin/activate
-
+```
+```bash
 # Для Windows
 python -m venv venv
 venv\Scripts\activate
@@ -67,8 +68,10 @@ sudo apt update
 sudo apt install mysql-server mysql-client -y
 sudo systemctl start mysql
 sudo systemctl enable mysql
-
+```
+```bash
 # Для Windows
+
 # Скачайте установщик с официального сайта MySQL
 ```
 **Создание базы данных и пользователя:**
@@ -270,6 +273,7 @@ ln -s /usr/lib/python3/dist-packages/wx venv/lib/python3.13/site-packages/wx
 
 grep -v "wxPython" requirements.txt | pip install -r /dev/stdin 
 ```
+
 
 
 
