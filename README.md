@@ -103,7 +103,7 @@ env
 # Настройки MySQL
 DB_HOST=localhost
 DB_PORT=3306
-DB_NAME=user           # Имя базы данных из дампа
+DB_NAME=user           # База данных, созданная выше
 DB_USER=theater_user   # Пользователь, созданный выше
 DB_PASSWORD=ваш_пароль # Пароль, указанный при создании пользователя
 ```
@@ -254,6 +254,7 @@ theater-troupe/
 ├── .gitignore                 # Игнорируемые файлы
 └── README.md                  # Документация
 ```
+
 
 
 
