@@ -57,7 +57,7 @@ venv\Scripts\activate
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
-[*Если устанока происходит слишком долго*](#Для VirtualBox усли не устанавливаеться wxPython (не хватает памяти))
+[Если устанока происходит слишком долго](#ДляVirtualBox)
 ### 4. Настройка MySQL
 **Установка MySQL (если не установлен):**
 ```bash
@@ -257,7 +257,8 @@ theater-troupe/
 ```
 
 
- # Для VirtualBox усли не устанавливаеться wxPython (не хватает памяти)
+ # Для VirtualBox
+**Если не устанавливаеться wxPython (не хватает памяти)**
 1. Установкка wxPython
 ```bash
 sudo apt install python3-wxgtk4.0
@@ -270,6 +271,7 @@ ln -s /usr/lib/python3/dist-packages/wx venv/lib/python3.13/site-packages/wx
 
 grep -v "wxPython" requirements.txt | pip install -r /dev/stdin 
 ```
+
 
 
 
