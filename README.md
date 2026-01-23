@@ -58,14 +58,27 @@ venv\Scripts\activate
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
-[Если устанока происходит слишком долго](#VirtualBox)
+
+**Eсли установка происходит слишком долго, можете использовать альтернативный подход:**
+1. Перед активацией виртуального окружения установите wxPython:
+```bash
+# Для Linux (Ubuntu/Debian)
+sudo apt install python3-wxgtk4.0
+```
+2. Активируйте виртуальное окружение, создайте символическую ссылку (симлинк) на пакет wxPython и установите все зависимости из requirements.txt, кроме wxPython.
+```bash
+ln -s /usr/lib/python3/dist-packages/wx venv/lib/python3.13/site-packages/wx
+
+grep -v "wxPython" requirements.txt | pip install -r /dev/stdin
+```
+
 ### 4. Настройка MySQL
 **Установка MySQL (если не установлен):**
 ```bash
 
 # Для Debian/Ubuntu
 sudo apt update
-sudo apt install mysql-server mysql-client -y
+sudo apt install mariadb-server mariadb-client -y
 sudo systemctl start mysql
 sudo systemctl enable mysql
 ```
@@ -259,20 +272,6 @@ theater-troupe/
 └── README.md                  # Документация
 ```
 
-
- # VirtualBox
-**Если не устанавливаеться wxPython (не хватает памяти)**
-1. Установкка wxPython
-```bash
-sudo apt install python3-wxgtk4.0
-```
-2. Создаем ссылку на папку wx внутри вашего venv
-```bash
-
-ln -s /usr/lib/python3/dist-packages/wx venv/lib/python3.13/site-packages/wx
-
-grep -v "wxPython" requirements.txt | pip install -r /dev/stdin 
-```
 
 
 
